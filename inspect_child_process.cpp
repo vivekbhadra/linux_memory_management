@@ -21,7 +21,7 @@ int main()
                   << std::flush;
 
         // Keep the child alive for inspection.
-        sleep(60);
+        sleep(180);
 
         std::cout << "Child: finished sleeping\n";
         return EXIT_SUCCESS;
