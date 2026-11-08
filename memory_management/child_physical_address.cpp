@@ -1,3 +1,4 @@
+// child_physical_address.cpp
 #include <cerrno>
 #include <cstdint>
 #include <cstdio>
@@ -88,7 +89,7 @@ int main()
 
     if (fork_result == 0)
     {
-        measurement = 250;
+        // measurement = 250;
 
         std::cout << "Child: measurement = " << measurement
                   << ", virtual address = " << &measurement << '\n';

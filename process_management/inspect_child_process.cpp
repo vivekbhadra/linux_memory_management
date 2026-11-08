@@ -1,3 +1,4 @@
+// inspect_child_process.cpp
 #include <cerrno>
 #include <cstdio>
 #include <cstdlib>
@@ -21,7 +22,12 @@ int main()
                   << std::flush;
 
         // Keep the child alive for inspection.
-        sleep(180);
+        // sleep(180);
+        while (1)
+        {
+            std::cout << "In child process\n";
+            sleep(1);
+        }
 
         std::cout << "Child: finished sleeping\n";
         return EXIT_SUCCESS;

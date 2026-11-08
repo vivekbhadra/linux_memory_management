@@ -1,3 +1,4 @@
+// create_child_process.cpp
 #include <cerrno>
 #include <cstdio>
 #include <cstdlib>
@@ -7,8 +8,6 @@
 
 int main()
 {
-    int measurement = 100;
-
     const pid_t fork_result = fork();
 
     if (fork_result == -1)
@@ -19,14 +18,15 @@ int main()
 
     if (fork_result == 0)
     {
-        measurement = 250;
-
-        std::cout << "Child: measurement = " << measurement << ", address = " << &measurement
-                  << '\n';
-
+        std::cout << "Zaid Professional: Child: my PID is " << getpid() << ", my parent's PID is "
+                  << getppid() << '\n';
         return EXIT_SUCCESS;
     }
 
+    std::cout << "Vivek Consultant: Parent: my PID is " << getpid() << ", my child's PID is "
+              << fork_result << '\n';
+
+    // Wait for the child to finish and collect its exit status.
     int status = 0;
     while (waitpid(fork_result, &status, 0) == -1)
     {
@@ -36,8 +36,6 @@ int main()
             return EXIT_FAILURE;
         }
     }
-
-    std::cout << "Parent: measurement = " << measurement << ", address = " << &measurement << '\n';
 
     return EXIT_SUCCESS;
 }

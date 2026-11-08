@@ -1,14 +1,16 @@
+// inspect_child_heap.cpp
 #include <cerrno>
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
+#include <memory>
 #include <sys/wait.h>
 #include <unistd.h>
 
-int measurement_limit = 100;
-
 int main()
 {
+    auto measurement = std::make_unique<int>(100);
+
     const pid_t fork_result = fork();
 
     if (fork_result == -1)
@@ -19,10 +21,10 @@ int main()
 
     if (fork_result == 0)
     {
-        measurement_limit = 250;
+        *measurement = 250;
 
-        std::cout << "Child PID: " << getpid() << "\nmeasurement_limit = " << measurement_limit
-                  << "\nVirtual address: " << &measurement_limit << '\n'
+        std::cout << "Child PID: " << getpid() << "\nmeasurement = " << *measurement
+                  << "\nInteger's virtual address: " << measurement.get() << '\n'
                   << std::flush;
 
         sleep(60);
@@ -40,7 +42,7 @@ int main()
         }
     }
 
-    std::cout << "Parent: measurement_limit = " << measurement_limit << '\n';
+    std::cout << "Parent: measurement = " << *measurement << '\n';
 
     return EXIT_SUCCESS;
 }

@@ -1,3 +1,4 @@
+// child_variable_copy.cpp
 #include <cerrno>
 #include <cstdio>
 #include <cstdlib>
@@ -19,13 +20,11 @@ int main()
 
     if (fork_result == 0)
     {
+        std::cout << "Child: initial measurement = " << measurement << '\n';
+
         measurement = 250;
 
-        std::cout << "Child PID: " << getpid() << "\nmeasurement = " << measurement
-                  << "\nVirtual address: " << &measurement << '\n'
-                  << std::flush;
-
-        sleep(60);
+        std::cout << "Child: changed measurement = " << measurement << '\n';
 
         return EXIT_SUCCESS;
     }
@@ -39,6 +38,8 @@ int main()
             return EXIT_FAILURE;
         }
     }
+
+    std::cout << "Parent: measurement after child finishes = " << measurement << '\n';
 
     return EXIT_SUCCESS;
 }

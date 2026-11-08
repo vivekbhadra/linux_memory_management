@@ -1,3 +1,4 @@
+// inspect_child_global.cpp
 #include <cerrno>
 #include <cstdio>
 #include <cstdlib>
@@ -5,10 +6,10 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+int measurement_limit = 100;
+
 int main()
 {
-    int measurement = 100;
-
     const pid_t fork_result = fork();
 
     if (fork_result == -1)
@@ -19,11 +20,13 @@ int main()
 
     if (fork_result == 0)
     {
-        std::cout << "Child: initial measurement = " << measurement << '\n';
+        measurement_limit = 250;
 
-        measurement = 250;
+        std::cout << "Child PID: " << getpid() << "\nmeasurement_limit = " << measurement_limit
+                  << "\nVirtual address: " << &measurement_limit << '\n'
+                  << std::flush;
 
-        std::cout << "Child: changed measurement = " << measurement << '\n';
+        sleep(60);
 
         return EXIT_SUCCESS;
     }
@@ -38,7 +41,7 @@ int main()
         }
     }
 
-    std::cout << "Parent: measurement after child finishes = " << measurement << '\n';
+    std::cout << "Parent: measurement_limit = " << measurement_limit << '\n';
 
     return EXIT_SUCCESS;
 }
